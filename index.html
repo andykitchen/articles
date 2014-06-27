@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8">
+  <title>Pattern Recognition</title>
+  <link href="http://fonts.googleapis.com/css?family=Quicksand:300,400,700" rel="stylesheet" type="text/css">
+  <link href="style.css" rel="stylesheet" type="text/css">
+ </head>
+ <body>
+  <article itemscope itemtype="http://schema.org/ScholarlyArticle">
+   <section class="title">
+    <header>
+     <h2 itemprop="headline">Pattern Recognition</h2>
+     <p>
+      <span itemprop="alternativeHeadline">and learning machines</span><br>
+      by
+      <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+       <span itemprop="name">Andy Kitchen</span>
+      </span>
+      <span class="byline-separator">/</span>
+      <time itemprop="datePublished" datetime="2014-06-25">June 2014</time>
+     </p>
+    </header>
+   </section>
+    <section id="load-error-information" class="error">
+    <h2>Couldn't load supporting data for this page properly!</h2>
+    <p>
+     Try <a href="javascript:location.reload()">refreshing</a> the page.
+    </p>
+   </section>
+   <section itemprop="articleBody" class="light">
+    <img src="images/mnist-example.png" width="367" height="196" alt="examples of handwritten digits from the MNIST dataset">
+
+    <p>
+     The heart of machine learning is pattern recognition. We want computers to find
+     patterns in time, patterns in space, patterns within patterns.
+    </p>
+
+    <p>
+     Once we know the patterns in the world, we can give them names and use
+     them to communicate. We can infer the unseen whole from an incomplete part.
+     By knowing the ways our patterns change in time, we can begin to predict the future.
+    </p>
+
+    <p>
+     Consider the hand written digits above. We first learn as children
+     the patterns of curves, lines and loops; we've drawn them with crayons and
+     traced them with pencils. Then we learn how these patterns join together
+     to form digits. A loop and a stroke for a nine, two loops make an eight.
+    </p>
+
+    <img src="images/example-feature.png" width="86" height="88" alt="a feature extracted the digits dataset">
+
+    <p>
+      Here is a visualisation of a pattern found by running a learning program
+      on a collection of 60,000 handwritten digits.
+    </p>
+
+    <p>
+      It has found that digits often have a horizontal top line or bottom line but not both.
+      This matches our intuition, 5s and 7s have a top line while some 1s and all 2s have
+      a bottom line. There a no digits with both.
+    </p>
+
+<table id="digit-grid"><tbody>
+ <tr>
+  <td><img class="mnist-digit" data-index="0"></td>
+  <td><img class="mnist-digit" data-index="1"></td>
+  <td><img class="mnist-digit" data-index="2"></td>
+  <td><img class="mnist-digit" data-index="3"></td>
+  <td><img class="mnist-digit" data-index="4"></td>
+  <td><img class="mnist-digit" data-index="5"></td>
+  <td><img class="mnist-digit" data-index="6"></td>
+  <td><img class="mnist-digit" data-index="7"></td>
+  <td><img class="mnist-digit" data-index="8"></td>
+  <td><img class="mnist-digit" data-index="9"></td>
+ </tr>
+ <tr>
+  <td><img class="mnist-digit" data-index="10"></td>
+  <td><img class="mnist-digit" data-index="11"></td>
+  <td><img class="mnist-digit" data-index="12"></td>
+  <td><img class="mnist-digit" data-index="13"></td>
+  <td><img class="mnist-digit" data-index="14"></td>
+  <td><img class="mnist-digit" data-index="15"></td>
+  <td><img class="mnist-digit" data-index="16"></td>
+  <td><img class="mnist-digit" data-index="17"></td>
+  <td><img class="mnist-digit" data-index="18"></td>
+  <td><img class="mnist-digit" data-index="19"></td>
+ </tr>
+ <tr>
+  <td><img class="mnist-digit" data-index="20"></td>
+  <td><img class="mnist-digit" data-index="21"></td>
+  <td><img class="mnist-digit" data-index="22"></td>
+  <td><img class="mnist-digit" data-index="23"></td>
+  <td><img class="mnist-digit" data-index="24"></td>
+  <td><img class="mnist-digit" data-index="25"></td>
+  <td><img class="mnist-digit" data-index="26"></td>
+  <td><img class="mnist-digit" data-index="27"></td>
+  <td><img class="mnist-digit" data-index="28"></td>
+  <td><img class="mnist-digit" data-index="29"></td>
+ </tr>
+ <tr>
+  <td><img class="mnist-digit" data-index="30"></td>
+  <td><img class="mnist-digit" data-index="31"></td>
+  <td><img class="mnist-digit" data-index="32"></td>
+  <td><img class="mnist-digit" data-index="33"></td>
+  <td><img class="mnist-digit" data-index="34"></td>
+  <td><img class="mnist-digit" data-index="35"></td>
+  <td><img class="mnist-digit" data-index="36"></td>
+  <td><img class="mnist-digit" data-index="37"></td>
+  <td><img class="mnist-digit" data-index="38"></td>
+  <td><img class="mnist-digit" data-index="39"></td>
+ </tr>
+ <tr>
+  <td><img class="mnist-digit" data-index="40"></td>
+  <td><img class="mnist-digit" data-index="41"></td>
+  <td><img class="mnist-digit" data-index="42"></td>
+  <td><img class="mnist-digit" data-index="43"></td>
+  <td><img class="mnist-digit" data-index="44"></td>
+  <td><img class="mnist-digit" data-index="45"></td>
+  <td><img class="mnist-digit" data-index="46"></td>
+  <td><img class="mnist-digit" data-index="47"></td>
+  <td><img class="mnist-digit" data-index="48"></td>
+  <td><img class="mnist-digit" data-index="49"></td>
+ </tr>
+</tbody></table>
+
+    <img id="current-digit" width="84px" height="84px">
+    <img id="current-activation">
+    <p id="current-features"></p>
+
+    <p>
+    </p>
+
+   </section>
+
+   <script type="text/javascript" src="util/polyfill.js"></script>
+   <script type="text/javascript" src="util/gradient.js"></script>
+   <script type="text/javascript" src="lib/numeric-1.2.6.js"></script>
+   <script type="text/javascript" src="rbm/rbm.js"></script>
+   <script type="text/javascript" src="main.js"></script>
+  </article>
+ </body>
+</html>

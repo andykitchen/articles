@@ -1,0 +1,84 @@
+body {
+ font-family: 'Quicksand', sans-serif;
+ margin: 0;
+ line-height: 1.5;
+ color: rgba(0,0,0,0.65);
+ font-size: 21px;
+}
+
+a {
+ text-decoration: none;
+ border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+
+section { padding: 2em 1em; }
+section.title { background-color: #363540; color: #f5f5f5; padding: 5em 1em;}
+section.light { background-color: white }
+
+section.error { display: none; background-color: #d1425a; color: #f5f5f5; }
+section.error a {
+ color: #f5f5f5;
+ font-style: normal;
+ border-bottom: 2px solid rgba(255,255,255,0.5)
+}
+
+h2 {
+ text-align: left;
+ max-width: 15em;
+ margin: 0.5em auto 1em auto;
+ color: #fff;
+ font-size: 2em;
+ font-weight: normal;
+ line-height: 1;
+}
+
+header h2 {
+ text-align: left;
+ max-width: 7.5em;
+ margin: 0.5em auto 1em auto;
+ color: #fff;
+ font-size: 4em;
+ font-weight: normal;
+ line-height: 1;
+}
+
+header p {
+ color: #777;
+}
+
+p {
+ max-width: 30em;
+ margin: 1em auto;
+ line-height: 1;
+}
+
+img, canvas {
+  display: block;
+  margin: 2em auto;
+}
+
+table {
+  margin: 2em auto;
+}
+
+table img {
+  margin: 0;
+  cursor: pointer;
+}
+
+img.mnist-digit {
+  width: 28px;
+  height: 28px;
+}
+
+#current-features img {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+.byline-separator {
+ font-size: 1.8em;
+ vertical-align: sub;
+ font-weight: 300;
+}
