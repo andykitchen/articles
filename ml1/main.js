@@ -18,8 +18,8 @@ function get(path, k, err) {
 
 window.RBM = init_RBM(numeric)
 
-get('/data/rbm-params-500.json', rbmParamsLoaded, showErrorInfo)
-get('/data/mnist-50.json', mnistLoaded, showErrorInfo)
+get('data/rbm-params-500.json', rbmParamsLoaded, showErrorInfo)
+get('data/mnist-50.json', mnistLoaded, showErrorInfo)
 
 function forEachElementByClassName(className, f) {
   var elems = document.getElementsByClassName(className)
