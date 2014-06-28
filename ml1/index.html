@@ -12,27 +12,19 @@
     <header>
      <h2 itemprop="headline">Pattern Recognition</h2>
      <p>
-      <span itemprop="alternativeHeadline">and learning machines</span><br>
+      <span itemprop="alternativeHeadline">and machine learning</span><br>
       by
-      <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-       <span itemprop="name">Andy Kitchen</span>
-      </span>
+      <span itemprop="author">Andy Kitchen</span>
       <span class="byline-separator">/</span>
       <time itemprop="datePublished" datetime="2014-06-25">June 2014</time>
      </p>
     </header>
    </section>
-    <section id="load-error-information" class="error">
-    <h2>Couldn't load supporting data for this page properly!</h2>
-    <p>
-     Try <a href="javascript:location.reload()">refreshing</a> the page.
-    </p>
-   </section>
    <section itemprop="articleBody" class="light">
     <img src="images/mnist-example.png" width="367" height="196" alt="examples of handwritten digits from the MNIST dataset">
 
     <p>
-     The heart of machine learning is pattern recognition. We want computers to find
+     At the heart of machine learning is pattern recognition. We want computers to find
      patterns in time, patterns in space, patterns within patterns.
     </p>
 
@@ -44,86 +36,55 @@
 
     <p>
      Consider the hand written digits above. We first learn as children
-     the patterns of curves, lines and loops; we've drawn them with crayons and
-     traced them with pencils. Then we learn how these patterns join together
+     the patterns of curves, lines and loops; we draw them with crayons and
+     trace them with pencils. Then we learn how these patterns join together
      to form digits. A loop and a stroke for a nine, two loops make an eight.
     </p>
 
     <img src="images/example-feature.png" width="86" height="88" alt="a feature extracted the digits dataset">
 
     <p>
-      Here is a visualisation of a pattern found by running a learning program
-      on a collection of 60,000 handwritten digits.
+     Above is a visualisation of one pattern found by showing a learning program
+     every picture in a collection of 60,000 handwritten digits.
     </p>
 
     <p>
-      It has found that digits often have a horizontal top line or bottom line but not both.
-      This matches our intuition, 5s and 7s have a top line while some 1s and all 2s have
-      a bottom line. There a no digits with both.
+     The program has found that digits often have a horizontal top line or bottom line
+     but not both. This matches our intuition, 5s and 7s have a top line while some 1s
+     and all 2s have a bottom line. There a no digits with both.
     </p>
 
-<table id="digit-grid"><tbody>
- <tr>
-  <td><img class="mnist-digit" data-index="0"></td>
-  <td><img class="mnist-digit" data-index="1"></td>
-  <td><img class="mnist-digit" data-index="2"></td>
-  <td><img class="mnist-digit" data-index="3"></td>
-  <td><img class="mnist-digit" data-index="4"></td>
-  <td><img class="mnist-digit" data-index="5"></td>
-  <td><img class="mnist-digit" data-index="6"></td>
-  <td><img class="mnist-digit" data-index="7"></td>
-  <td><img class="mnist-digit" data-index="8"></td>
-  <td><img class="mnist-digit" data-index="9"></td>
- </tr>
- <tr>
-  <td><img class="mnist-digit" data-index="10"></td>
-  <td><img class="mnist-digit" data-index="11"></td>
-  <td><img class="mnist-digit" data-index="12"></td>
-  <td><img class="mnist-digit" data-index="13"></td>
-  <td><img class="mnist-digit" data-index="14"></td>
-  <td><img class="mnist-digit" data-index="15"></td>
-  <td><img class="mnist-digit" data-index="16"></td>
-  <td><img class="mnist-digit" data-index="17"></td>
-  <td><img class="mnist-digit" data-index="18"></td>
-  <td><img class="mnist-digit" data-index="19"></td>
- </tr>
- <tr>
-  <td><img class="mnist-digit" data-index="20"></td>
-  <td><img class="mnist-digit" data-index="21"></td>
-  <td><img class="mnist-digit" data-index="22"></td>
-  <td><img class="mnist-digit" data-index="23"></td>
-  <td><img class="mnist-digit" data-index="24"></td>
-  <td><img class="mnist-digit" data-index="25"></td>
-  <td><img class="mnist-digit" data-index="26"></td>
-  <td><img class="mnist-digit" data-index="27"></td>
-  <td><img class="mnist-digit" data-index="28"></td>
-  <td><img class="mnist-digit" data-index="29"></td>
- </tr>
- <tr>
-  <td><img class="mnist-digit" data-index="30"></td>
-  <td><img class="mnist-digit" data-index="31"></td>
-  <td><img class="mnist-digit" data-index="32"></td>
-  <td><img class="mnist-digit" data-index="33"></td>
-  <td><img class="mnist-digit" data-index="34"></td>
-  <td><img class="mnist-digit" data-index="35"></td>
-  <td><img class="mnist-digit" data-index="36"></td>
-  <td><img class="mnist-digit" data-index="37"></td>
-  <td><img class="mnist-digit" data-index="38"></td>
-  <td><img class="mnist-digit" data-index="39"></td>
- </tr>
- <tr>
-  <td><img class="mnist-digit" data-index="40"></td>
-  <td><img class="mnist-digit" data-index="41"></td>
-  <td><img class="mnist-digit" data-index="42"></td>
-  <td><img class="mnist-digit" data-index="43"></td>
-  <td><img class="mnist-digit" data-index="44"></td>
-  <td><img class="mnist-digit" data-index="45"></td>
-  <td><img class="mnist-digit" data-index="46"></td>
-  <td><img class="mnist-digit" data-index="47"></td>
-  <td><img class="mnist-digit" data-index="48"></td>
-  <td><img class="mnist-digit" data-index="49"></td>
- </tr>
-</tbody></table>
+    <p>
+     Our learning program is a crude model a tiny brain, with only 500 neurons.
+     So small that we can simulate it in this web–browser. Facinatingly
+     it is still capable of exhibiting many of the features of intelligence.
+    </p>
+
+    <p>
+     In this case, each time our program is shown a picture of a digit, It's not
+     told what it is. We want it to find its own patterns. This is called
+     ‘unsupervised learning’, because there is no benevolent tutor giving
+     out the correct answers. Even though the digits are familiar to us, they
+     are like an alien language to the program.
+    </p>
+
+    <p>
+     Below is a simulation of the 500 neurons used in our learning program,
+     along with a visualisation of the patterns that activate them.
+     Click on a digit, or draw a new one to see which patterns are activated.
+    </p>
+
+    <p>
+     When using statistics we are often limited to supporting or refuting an
+     already know hypothesis. For example, we could calculate the probability
+     that some certain symptoms mean you have a particular disease.
+     With the right machine learning algorithm, we could find a distinct
+     pattern of symptoms that had never been named before and investigate them
+     to see if they form a new disease. Or we could find a larger pattern in two
+     disparate diseases that leads us to investigate their relationship.
+    </p>
+
+    <div class="digit-grid" id="digit-grid"></div>
 
     <img id="current-digit" width="84px" height="84px">
     <img id="current-activation">
@@ -132,6 +93,25 @@
     <p>
     </p>
 
+   </section>
+
+   <section>
+    <h2>Further Reading</h2>
+    <p>
+     The machine learning algorithm used in this article is the <a href="http://en.wikipedia.org/wiki/Restricted_Boltzmann_machine">Restricted Boltzmann machine</a>. If you are interested in contemporary AI and its relationship to the brain check out
+     the work of
+     <span itemscope itemtype="http://schema.org/Person">
+      <a href="http://www.cs.toronto.edu/~hinton/" itemprop="url"><span itemprop="name">Geoff Hinton</span></a></span>,
+     <span itemscope itemtype="http://schema.org/Person">
+      <a href="http://cs.stanford.edu/people/ang/" itemprop="url"><span itemprop="name">Andrew Ng</span></a></span> and
+     <span itemscope itemtype="http://schema.org/Person">
+      <a href="http://yann.lecun.com/" itemprop="url"><span itemprop="name">Yann Lecunn</span></a></span>.
+     If you are a programmer the <a href="https://www.coursera.org/course/ml">coursera course on machine learning</a> covers
+     implementing neural networks in detail. The book
+     <span itemscope itemtype="http://schema.org/Book"><a href="http://www.onintelligence.org/" itemprop="url"><span itemprop="name">On Intelligence</span></a> by <span itemprop="author">Jeff Hawkins</span></span>
+     is a good non-tehnical exposition of many of the ideas in this article. If you would like an approachable explination
+     of the current work in neuroscience there is the excellent book
+     <span itemscope itemtype="http://schema.org/Book"><a href="http://connectomethebook.com/" itemprop="url"><span itemprop="name">Connectome</span></a> by <span itemprop="author">Sebastian Seung</span></span>.
    </section>
 
    <script type="text/javascript" src="util/polyfill.js"></script>

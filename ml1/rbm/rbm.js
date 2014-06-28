@@ -13,51 +13,53 @@ rbm = {
 
 */
 
-function init_RBM(numeric) {
-  function load(params) {
-    return {
-      W: params.W,
-      Wt: numeric.transpose(params.W),
-      hbias: params.h,
-      vbias: params.v
-    }
-  }
+RBM = (function(numeric) {
 
-  function sigmoid(input) {
-    for(var i = 0; i < input.length; i++) {
-      input[i] = 1 / (1 + Math.exp(-input[i]))
-    }
-  }
-
-  function binomial(input) {
-    for(var i = 0; i < input.length; i++) {
-      input[i] = rng.random() < input[i] ? 1 : 0
-    }
-  }
-
-  function sample(input, W, bias) {
-    var output = numeric.add(numeric.dot(W, input), bias)
-    sigmoid(output)
-
-    return output
-  }
-
-  function RBMState(params) {
-    this.params = params
-    this.hidden = []
-    this.visible = []
-  }
-
-  RBMState.prototype.sample_h_given_v = function() {
-    this.hidden = sample(this.visible, this.params.Wt, this.params.hbias)
-  };
-
-  RBMState.prototype.sample_v_given_h = function() {
-    this.visible = sample(this.hidden, this.params.W, this.params.vbias)
-  };
-
+function load(params) {
   return {
-    load: load,
-    RBMState: RBMState
+    W: params.W,
+    Wt: numeric.transpose(params.W),
+    hbias: params.h,
+    vbias: params.v
   }
 }
+
+function sigmoid(input) {
+  for(var i = 0; i < input.length; i++) {
+    input[i] = 1 / (1 + Math.exp(-input[i]))
+  }
+}
+
+function binomial(input) {
+  for(var i = 0; i < input.length; i++) {
+    input[i] = rng.random() < input[i] ? 1 : 0
+  }
+}
+
+function sample(input, W, bias) {
+  var output = numeric.add(numeric.dot(W, input), bias)
+  sigmoid(output)
+
+  return output
+}
+
+function RBMState(params) {
+  this.params = params
+  this.hidden = []
+  this.visible = []
+}
+
+RBMState.prototype.sample_h_given_v = function() {
+  this.hidden = sample(this.visible, this.params.Wt, this.params.hbias)
+};
+
+RBMState.prototype.sample_v_given_h = function() {
+  this.visible = sample(this.hidden, this.params.W, this.params.vbias)
+};
+
+return {
+  load: load,
+  RBMState: RBMState
+}
+
+})(numeric);

@@ -1,4 +1,23 @@
-(function(){
+(function() {
+
+var isLoaded = false
+
+function onload(k) {
+  if(isLoaded) {
+    k()
+  } else {
+    if (document.addEventListener) {
+      document.addEventListener('DOMContentLoaded', k)
+    } else {
+      document.attachEvent('onreadystatechange', function() {
+        if (document.readyState === 'interactive')
+          k()
+      })
+    }
+  }
+}
+
+onload(function() { isLoaded = true })
 
 function get(path, k, err) {
   var request = new XMLHttpRequest()
@@ -15,8 +34,6 @@ function get(path, k, err) {
   request.onerror = err
   request.send()
 }
-
-window.RBM = init_RBM(numeric)
 
 get('data/rbm-params-500.json', rbmParamsLoaded, showErrorInfo)
 get('data/mnist-50.json', mnistLoaded, showErrorInfo)
@@ -77,7 +94,15 @@ function clearChildren(node) {
 
 function precomputeFeatureImages(Wt) {
   // var featureColormap = Gradient.gradient([-1.5, 0, 1.5], [[59, 76, 192], [221, 220, 220], [180, 4, 40]])
-  var featureColormap = Gradient.gradient([-1.5, 0, 1.5], [[0x05, 0x71, 0xb0], [0xf7, 0xf7, 0xf7], [0xca, 0x00, 0x20]])
+  // var featureColormap = Gradient.gradient([-1.2, 0, 1.2], [[0x05, 0x71, 0xb0], [0xf7, 0xf7, 0xf7], [0xca, 0x00, 0x20]])
+  // var featureColormap = Gradient.gradient(
+  //   [-1.5, -0.25, 0, 0.1, 1],
+  //   [[0x05, 0x71, 0xb0], [0xff, 0xff, 0xff], [0xff, 0xff, 0xff], [0xff, 0xff, 0xff], [0xca, 0x00, 0x20]])
+  // var featureColormap = Gradient.gradient([-1, 0, 1], [[0x5e, 0x3c, 0x99], [0xf7, 0xf7, 0xf7], [0xe6, 0x61, 0x01]])
+
+  var featureColormap = Gradient.gradient(
+    [-0.8, 0, 0.8],
+    [[0x0, 0x0, 0.0], [0x7f, 0x7f, 0x7f], [0xff, 0xff, 0xff]])
 
   var features = []
   for(var i = 0; i < Wt.length; i++) {
@@ -89,29 +114,32 @@ function precomputeFeatureImages(Wt) {
 function rbmParamsLoaded(json) {
   var params = RBM.load(json)
   var rbm = new RBM.RBMState(params)
-  var currentActivation = document.getElementById('current-activation')
-  var currentFeatures = document.getElementById('current-features')
-  var featureImages = precomputeFeatureImages(params.Wt)
-  var activationColormap = Gradient.gradient([-1, 0, 1], [[0, 0, 255], [255, 255, 255], [255, 0, 0]])
 
-  forEachElementByClassName('rbm-feature', function(elem) {
-    var index = +elem.getAttribute('data-index')
-    if(index) {
-      elem.src = featureImages[index]
-    }
-  })
+  onload(function() {
+    var currentActivation = document.getElementById('current-activation')
+    var currentFeatures = document.getElementById('current-features')
+    var featureImages = precomputeFeatureImages(params.Wt)
+    var activationColormap = Gradient.gradient([-1, 0, 1], [[0, 0, 255], [255, 255, 255], [255, 0, 0]])
 
-  document.getElementById('digit-grid').addEventListener('choose-input', function(event) {
-    rbm.visible = event.detail.input
-    rbm.sample_h_given_v()
-    currentActivation.src = extractImage(rbm.hidden, 25, 20, activationColormap)
-    var features = topFeatures(rbm.hidden, 50)
+    forEachElementByClassName('rbm-feature', function(elem) {
+      var index = +elem.getAttribute('data-index')
+      if(index) {
+        elem.src = featureImages[index]
+      }
+    })
 
-    clearChildren(currentFeatures)
-    features.forEach(function(featureIndex) {
-      var node = document.createElement("img")
-      node.src = featureImages[featureIndex]
-      currentFeatures.appendChild(node)
+    document.getElementById('digit-grid').addEventListener('choose-input', function(event) {
+      rbm.visible = event.detail.input
+      rbm.sample_h_given_v()
+      currentActivation.src = extractImage(rbm.hidden, 25, 20, activationColormap)
+      var features = topFeatures(rbm.hidden, 40)
+
+      clearChildren(currentFeatures)
+      features.forEach(function(featureIndex) {
+        var node = document.createElement("img")
+        node.src = featureImages[featureIndex]
+        currentFeatures.appendChild(node)
+      })
     })
   })
 }
@@ -121,26 +149,60 @@ function mnistLoaded(mnist) {
   var height = mnist.geometry.height
   var colormap = Gradient.gradient([0, 1], [[255, 255, 255], [0, 0, 0]])
 
-  forEachElementByClassName('mnist-digit', function(elem) {
-    var index = elem.getAttribute('data-index')
-    if(index) {
-      elem.src = extractImage(mnist.digits[index], width, height, colormap)
-    }
-  })
+  onload(function() {
+    forEachElementByClassName('digit-grid', function(elem) {
+      var table = document.createElement('table')
+      var tbody = document.createElement('tbody')
+      table.appendChild(tbody)
 
-  var currentDigit = document.getElementById('current-digit')
-  document.getElementById('digit-grid').addEventListener('click', function(event) {
-    var index = event.target.getAttribute('data-index')
-    if(index) {
-      currentDigit.src = event.target.src
-      var chooseEvent = new CustomEvent('choose-input', {detail: {input: mnist.digits[index]}});
-      event.currentTarget.dispatchEvent(chooseEvent)
-    }
+      var rows = 5
+      var columns = 10
+
+      for(var i = 0; i < rows; i++) {
+        var tr = document.createElement('tr')
+        tbody.appendChild(tr)
+        for(var j = 0; j < columns; j++) {
+          var index = i*columns + j
+          var td = document.createElement('td')
+          var img = document.createElement('img')
+          tr.appendChild(td)
+          td.appendChild(img)
+
+          img.classList.add('mnist-digit')
+          img.setAttribute('data-index', index)
+        }
+      }
+
+      elem.appendChild(table)
+    })
+
+    forEachElementByClassName('mnist-digit', function(elem) {
+      var index = elem.getAttribute('data-index')
+      if(index) {
+        elem.src = extractImage(mnist.digits[index], width, height, colormap)
+      }
+    })
+
+    var currentDigit = document.getElementById('current-digit')
+    document.getElementById('digit-grid').addEventListener('click', function(event) {
+      var index = event.target.getAttribute('data-index')
+      if(index) {
+        currentDigit.src = event.target.src
+        var chooseEvent = new CustomEvent('choose-input', {detail: {input: mnist.digits[index]}});
+        event.currentTarget.dispatchEvent(chooseEvent)
+      }
+    })
   })
 }
 
 function showErrorInfo() {
-  document.getElementById('load-error-information').style.display = 'block'
+  var html = 
+    '<section class="error">' +
+      '<h2>Could not load supporting data for this page properly!</h2>' +
+      '<p>Try <a href="javascript:location.reload()">refreshing</a> the page.</p>' +
+    '</section>'
+
+  document.querySelector('section.title').insertAdjacentHTML('afterend', html)
 }
 
 function extractImage(v, width, height, colormap) {
