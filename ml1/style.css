@@ -71,6 +71,15 @@ img.mnist-digit {
   height: 28px;
 }
 
+img.feature {
+  width: 28px;
+  height: 28px;
+}
+
+img.feature.active {
+  opacity: 0.1;
+}
+
 #current-features img {
   display: inline;
   margin: 0;

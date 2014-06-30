@@ -31,7 +31,7 @@
     <p>
      Once we know the patterns in the world, we can give them names and use
      them to communicate. We can infer the unseen whole from an incomplete part.
-     By knowing the ways our patterns change in time, we can begin to predict the future.
+     By knowing the ways our patterns change in time — we can begin to predict the future.
     </p>
 
     <p>
@@ -45,7 +45,7 @@
 
     <p>
      Above is a visualisation of one pattern found by showing a learning program
-     every picture in a collection of 60,000 handwritten digits.
+     pictures of 60,000 handwritten digits.
     </p>
 
     <p>
@@ -55,23 +55,65 @@
     </p>
 
     <p>
-     Our learning program is a crude model a tiny brain, with only 500 neurons.
+     Our learning program is a crude model of a tiny brain, with only 500 neurons.
      So small that we can simulate it in this web–browser. Facinatingly
      it is still capable of exhibiting many of the features of intelligence.
     </p>
 
+    <p> <!-- FIXME -->
+     Below is a live simulation of the 500 neurons in our learning program.
+     With each neuron a visualisation of the patterns that activate them.
+     Click on a digit or draw a new one to see which patterns are activated.
+    </p>
+
+    <div class="digit-grid" id="digit-grid"></div>
+
+    <img id="current-digit" width="84px" height="84px">
+    <img id="current-activation">
+    <p id="current-features"></p>
+
+    <div class="feature-grid" id="feature-grid"></div>
+
+
     <p>
-     In this case, each time our program is shown a picture of a digit, It's not
-     told what it is. We want it to find its own patterns. This is called
-     ‘unsupervised learning’, because there is no benevolent tutor giving
-     out the correct answers. Even though the digits are familiar to us, they
-     are like an alien language to the program.
+     Input digits are reflected by simulated neural activity.
+     Each neuron is sensitive to a specific pattern — if that
+     pattern is present on the retina the related neuron
+     will become active.
     </p>
 
     <p>
-     Below is a simulation of the 500 neurons used in our learning program,
-     along with a visualisation of the patterns that activate them.
-     Click on a digit, or draw a new one to see which patterns are activated.
+     The inputs are digested by the brain–model into a collection of patterns.
+     The problem of learning is now about wiring the neurons to the retina in the right way.
+    </p>
+
+    <p>
+     “Fire together, wire together”
+     http://en.wikipedia.org/wiki/Hebbian_theory
+    </p>
+   </section>
+
+   <section>
+    <h2>Anomalies</h2> 
+   </section>
+
+   <section>
+    <h2>Signal &amp; Noise</h2> 
+   </section>
+
+   <section>
+    <h2>Inference</h2>
+   </section>
+
+   <section>
+    <h2>Snippets</h2>
+
+    <p>
+     In this case, each time our program is shown a picture of a digit, It's not
+     told what it is. We want it to find its own patterns. This is called
+     ‘unsupervised learning’ because there is no benevolent tutor giving
+     out the correct answers. Even though the digits are familiar to us, they
+     are like an alien language to the program.
     </p>
 
     <p>
@@ -84,15 +126,6 @@
      disparate diseases that leads us to investigate their relationship.
     </p>
 
-    <div class="digit-grid" id="digit-grid"></div>
-
-    <img id="current-digit" width="84px" height="84px">
-    <img id="current-activation">
-    <p id="current-features"></p>
-
-    <p>
-    </p>
-
    </section>
 
    <section>
@@ -100,18 +133,46 @@
     <p>
      The machine learning algorithm used in this article is the <a href="http://en.wikipedia.org/wiki/Restricted_Boltzmann_machine">Restricted Boltzmann machine</a>. If you are interested in contemporary AI and its relationship to the brain check out
      the work of
+
      <span itemscope itemtype="http://schema.org/Person">
-      <a href="http://www.cs.toronto.edu/~hinton/" itemprop="url"><span itemprop="name">Geoff Hinton</span></a></span>,
+      <a href="http://www.cs.toronto.edu/~hinton/" itemprop="url">
+       <span itemprop="name">Geoffrey Hinton</span></a></span>,
+
      <span itemscope itemtype="http://schema.org/Person">
-      <a href="http://cs.stanford.edu/people/ang/" itemprop="url"><span itemprop="name">Andrew Ng</span></a></span> and
+      <a href="http://cs.stanford.edu/people/ang/" itemprop="url">
+       <span itemprop="name">Andrew Ng</span></a></span> and
+
      <span itemscope itemtype="http://schema.org/Person">
-      <a href="http://yann.lecun.com/" itemprop="url"><span itemprop="name">Yann Lecunn</span></a></span>.
+      <a href="http://yann.lecun.com/" itemprop="url">
+       <span itemprop="name">Yann Lecunn</span></a></span>.
+
      If you are a programmer the <a href="https://www.coursera.org/course/ml">coursera course on machine learning</a> covers
      implementing neural networks in detail. The book
-     <span itemscope itemtype="http://schema.org/Book"><a href="http://www.onintelligence.org/" itemprop="url"><span itemprop="name">On Intelligence</span></a> by <span itemprop="author">Jeff Hawkins</span></span>
-     is a good non-tehnical exposition of many of the ideas in this article. If you would like an approachable explination
+
+     <span itemscope itemtype="http://schema.org/Book">
+      <a href="http://www.onintelligence.org/" itemprop="url">
+       <span itemprop="name">On Intelligence</span>
+      </a>
+      by
+      <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+       <a href="http://en.wikipedia.org/wiki/Jeff_Hawkins" itemprop="url">
+        <span itemprop="name">Jeff Hawkins</span>
+       </a>
+      </span>
+     </span>
+
+     is a good non-technical exposition of many of the ideas in this article. If you would like an approachable explination
      of the current work in neuroscience there is the excellent book
-     <span itemscope itemtype="http://schema.org/Book"><a href="http://connectomethebook.com/" itemprop="url"><span itemprop="name">Connectome</span></a> by <span itemprop="author">Sebastian Seung</span></span>.
+     
+     <span itemscope itemtype="http://schema.org/Book">
+      <a href="http://connectomethebook.com/" itemprop="url">
+       <span itemprop="name">Connectome</span>
+      </a>
+      by
+      <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+       <a href="http://hebb.mit.edu/people/seung/" itemprop="url">
+       <span itemprop="name">Sebastian Seung</span></a></span></span>.
+
    </section>
 
    <script type="text/javascript" src="util/polyfill.js"></script>
