@@ -99,12 +99,15 @@ function precomputeFeatureImages(Wt) {
   //   [-1.5, -0.25, 0, 0.1, 1],
   //   [[0x05, 0x71, 0xb0], [0xff, 0xff, 0xff], [0xff, 0xff, 0xff], [0xff, 0xff, 0xff], [0xca, 0x00, 0x20]])
   // var featureColormap = Gradient.gradient([-1, 0, 1], [[0x5e, 0x3c, 0x99], [0xf7, 0xf7, 0xf7], [0xe6, 0x61, 0x01]])
+  // var featureColormap = Gradient.gradient(
+  //   [-0.8, 0, 0.8],
+  //   [[0x0, 0x0, 0.0], [0x7f, 0x7f, 0x7f], [0xff, 0xff, 0xff]])
 
   var featureWidth = 28;
   var featureHeight = 28;
   var featureColormap = Gradient.gradient(
     [-0.8, 0, 0.8],
-    [[0x0, 0x0, 0.0], [0x7f, 0x7f, 0x7f], [0xff, 0xff, 0xff]])
+    [[0xff, 0xff, 0xff], [0x7f, 0x7f, 0x7f], [0x0, 0x0, 0.0]])
 
   var features = []
   for(var i = 0; i < Wt.length; i++) {
@@ -113,57 +116,8 @@ function precomputeFeatureImages(Wt) {
   return features
 }
 
-function rbmParamsLoaded(json) {
-  var params = RBM.load(json)
-  var rbm = new RBM.RBMState(params)
-
-  onload(function() {
-    var currentActivation = document.getElementById('current-activation')
-    var currentFeatures = document.getElementById('current-features')
-    var featureImages = precomputeFeatureImages(params.Wt)
-    var activationColormap = Gradient.gradient([-1, 0, 1], [[0, 0, 255], [255, 255, 255], [255, 0, 0]])
-
-    forEachElementByClassName('rbm-feature', function(elem) {
-      var index = +elem.getAttribute('data-index')
-      if(index) {
-        elem.src = featureImages[index]
-      }
-    })
-
-    forEachElementByClassName('feature-grid', function(elem) {
-      var grid = buildGrid(20, 25, function(index, td) {
-        var img = document.createElement('img')
-        td.appendChild(img)
-        img.classList.add('feature')
-        img.src = featureImages[index]
-
-        if(Math.random() < 0.5) {
-          img.classList.add('active')
-        }
-      })
-
-      elem.appendChild(grid)
-    })
-
-    var gridColumns = 25
-    var gridRows = 20
-    document.getElementById('digit-grid').addEventListener('choose-input', function(event) {
-      rbm.visible = event.detail.input
-      rbm.sample_h_given_v()
-      currentActivation.src = extractImage(rbm.hidden, gridColumns, gridRows, activationColormap)
-      var features = topFeatures(rbm.hidden, 40)
-
-      clearChildren(currentFeatures)
-      features.forEach(function(featureIndex) {
-        var img = document.createElement('img')
-        img.src = featureImages[featureIndex]
-        currentFeatures.appendChild(img)
-      })
-    })
-  })
-}
-
 function buildGrid(rows, columns, fn) {
+  var elems = []
   var table = document.createElement('table')
   var tbody = document.createElement('tbody')
   table.appendChild(tbody)
@@ -175,13 +129,64 @@ function buildGrid(rows, columns, fn) {
       var index = i*columns + j
       var td = document.createElement('td')
 
-      fn(index, td)
+      var elem = fn(index)
+      elems[index] = elem
 
+      td.appendChild(elem)
       tr.appendChild(td)
     }
   }
 
-  return table
+  return {
+    elems: elems,
+    root: table
+  }
+}
+
+var featureGrid = buildGrid(20, 25, function(index, td) {
+  var img = document.createElement('img')
+  img.classList.add('feature')
+  return img
+})
+
+onload(function() {
+  document.getElementById('feature-grid').appendChild(featureGrid.root)
+})
+
+function rbmParamsLoaded(json) {
+  var params = RBM.load(json)
+  var rbm = new RBM.RBMState(params)
+
+  onload(function() {
+    var currentFeatures = document.getElementById('current-features')
+    var featureImages = precomputeFeatureImages(params.Wt)
+
+    forEachElementByClassName('rbm-feature', function(elem) {
+      var index = +elem.getAttribute('data-index')
+      if(index) {
+        elem.src = featureImages[index]
+      }
+    })
+
+    featureGrid.elems.forEach(function(elem, index) {
+      elem.src = featureImages[index]
+    })
+
+    var gridColumns = 25
+    var gridRows = 20
+    document.getElementById('digit-grid').addEventListener('choose-input', function(event) {
+      rbm.visible = event.detail.input
+      rbm.sample_h_given_v()
+
+      featureGrid.elems.forEach(function(elem, index) {
+        if(rbm.hidden[index] > 0.5) {
+          elem.classList.add('active')
+        } else {
+          elem.classList.remove('active')
+        }
+      })
+    })
+  })
 }
 
 function mnistLoaded(mnist) {
@@ -191,14 +196,14 @@ function mnistLoaded(mnist) {
 
   onload(function() {
     forEachElementByClassName('digit-grid', function(elem) {
-      var grid = buildGrid(5, 10, function(index, td) {
+      var grid = buildGrid(5, 10, function(index) {
         var img = document.createElement('img')
-        td.appendChild(img)
         img.classList.add('mnist-digit')
         img.setAttribute('data-index', index)
+        return img
       })
 
-      elem.appendChild(grid)
+      elem.appendChild(grid.root)
     })
 
     forEachElementByClassName('mnist-digit', function(elem) {

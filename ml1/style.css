@@ -63,21 +63,30 @@ table {
 table img {
   margin: 0;
   cursor: pointer;
-  border: 1px solid #ddd;
 }
 
 img.mnist-digit {
   width: 28px;
   height: 28px;
+  border: 1px solid #ddd;
 }
 
 img.feature {
-  width: 28px;
-  height: 28px;
+  width: 14px;
+  height: 14px;
+  opacity: 0.1;
 }
 
 img.feature.active {
-  opacity: 0.1;
+  opacity: 1.0;
+}
+
+.feature-grid table {
+  border-collapse: collapse;
+}
+
+td, tr {
+  padding: 0;
 }
 
 #current-features img {

@@ -32,13 +32,14 @@ function sigmoid(input) {
 
 function binomial(input) {
   for(var i = 0; i < input.length; i++) {
-    input[i] = rng.random() < input[i] ? 1 : 0
+    input[i] = Math.random() < input[i] ? 1 : 0
   }
 }
 
 function sample(input, W, bias) {
   var output = numeric.add(numeric.dot(W, input), bias)
   sigmoid(output)
+  binomial(output)
 
   return output
 }
