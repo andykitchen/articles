@@ -82,7 +82,6 @@ function topFeatures(activations, n) {
   indices.sort(function(a, b) {
     return activations[a] - activations[b]
   })
-
   return take(indices, n)
 }
 
@@ -93,16 +92,6 @@ function clearChildren(node) {
 }
 
 function precomputeFeatureImages(Wt) {
-  // var featureColormap = Gradient.gradient([-1.5, 0, 1.5], [[59, 76, 192], [221, 220, 220], [180, 4, 40]])
-  // var featureColormap = Gradient.gradient([-1.2, 0, 1.2], [[0x05, 0x71, 0xb0], [0xf7, 0xf7, 0xf7], [0xca, 0x00, 0x20]])
-  // var featureColormap = Gradient.gradient(
-  //   [-1.5, -0.25, 0, 0.1, 1],
-  //   [[0x05, 0x71, 0xb0], [0xff, 0xff, 0xff], [0xff, 0xff, 0xff], [0xff, 0xff, 0xff], [0xca, 0x00, 0x20]])
-  // var featureColormap = Gradient.gradient([-1, 0, 1], [[0x5e, 0x3c, 0x99], [0xf7, 0xf7, 0xf7], [0xe6, 0x61, 0x01]])
-  // var featureColormap = Gradient.gradient(
-  //   [-0.8, 0, 0.8],
-  //   [[0x0, 0x0, 0.0], [0x7f, 0x7f, 0x7f], [0xff, 0xff, 0xff]])
-
   var featureWidth = 28;
   var featureHeight = 28;
   var featureColormap = Gradient.gradient(
@@ -143,6 +132,77 @@ function buildGrid(rows, columns, fn) {
   }
 }
 
+function drawVectorCanvas(canvas, rows, columns) {
+  var context = canvas.getContext('2d')
+  var vector = newZeroArray(rows * columns)
+
+  context.webkitImageSmoothingEnabled && (context.webkitImageSmoothingEnabled = false)
+
+  function mouse_pos(canvas, event) {
+    var rect = canvas.getBoundingClientRect()
+    return {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top
+    }
+  }
+
+  var backingCanvas = document.createElement('canvas')
+  backingCanvas.width = columns
+  backingCanvas.height = rows
+  var backingContext = backingCanvas.getContext('2d')
+
+  function redraw() {
+    var imageData = vectorToImageData(backingContext, vector, columns, rows, digitColormap)
+    backingContext.putImageData(imageData, 0, 0)
+    context.drawImage(backingCanvas, 0, 0, canvas.width, canvas.height)
+  }
+
+  function fireDrawEvent() {
+    var drawEvent = new CustomEvent('draw', {detail: {vector: vector}});
+    canvas.dispatchEvent(drawEvent)
+  }
+
+  redraw()
+
+  function draw(event) {
+    var xscale = columns / canvas.width
+    var yscale = rows / canvas.height
+    var pos = mouse_pos(canvas, event)
+
+    var i1 = Math.floor(xscale * pos.x)
+    var j1 = Math.floor(yscale * pos.y)
+    var i2 = Math.ceil(xscale * pos.x)
+    var j2 = Math.ceil(yscale * pos.y)
+
+    vector[j1 * columns + i1] = 1
+    vector[j1 * columns + i2] = 1
+    vector[j2 * columns + i1] = 1
+    vector[j2 * columns + i2] = 1
+
+    fireDrawEvent()
+    redraw()
+  }
+
+  canvas.onmousedown = function(event) {
+    canvas.onmousemove = draw
+    draw(event)
+  }
+
+  canvas.onmouseup = function(event) {
+    canvas.onmousemove = null
+  }
+
+  return {
+    vector: vector,
+    redraw: redraw,
+    setVector: function(newVector) {
+      vector = newVector
+      fireDrawEvent()
+      redraw()
+    }
+  }
+}
+
 var featureGrid = buildGrid(20, 25, function(index, td) {
   var img = document.createElement('img')
   img.classList.add('feature')
@@ -151,6 +211,13 @@ var featureGrid = buildGrid(20, 25, function(index, td) {
 
 onload(function() {
   document.getElementById('feature-grid').appendChild(featureGrid.root)
+
+  var canvas = document.getElementById('current-digit-canvas')
+  var vectorCanvas = drawVectorCanvas(canvas, 28, 28)
+
+  document.getElementById('digit-grid').addEventListener('choose-input', function(event) {
+    vectorCanvas.setVector(event.detail.input)
+  })
 })
 
 function rbmParamsLoaded(json) {
@@ -174,25 +241,27 @@ function rbmParamsLoaded(json) {
 
     var gridColumns = 25
     var gridRows = 20
-    document.getElementById('digit-grid').addEventListener('choose-input', function(event) {
-      rbm.visible = event.detail.input
+    document.getElementById('current-digit-canvas').addEventListener('draw', function(event) {
+      rbm.visible = event.detail.vector
       rbm.sample_h_given_v()
 
       featureGrid.elems.forEach(function(elem, index) {
-        if(rbm.hidden[index] > 0.5) {
-          elem.classList.add('active')
-        } else {
-          elem.classList.remove('active')
-        }
+        // if(rbm.hidden[index] > 0.5) {
+        //   elem.classList.add('active')
+        // } else {
+        //   elem.classList.remove('active')
+        // }
+        elem.style.opacity = rbm.hidden[index]
       })
     })
   })
 }
 
+var digitColormap = Gradient.gradient([0, 1], [[255, 255, 255], [0, 0, 0]])
+
 function mnistLoaded(mnist) {
   var width = mnist.geometry.width
   var height = mnist.geometry.height
-  var colormap = Gradient.gradient([0, 1], [[255, 255, 255], [0, 0, 0]])
 
   onload(function() {
     forEachElementByClassName('digit-grid', function(elem) {
@@ -209,15 +278,13 @@ function mnistLoaded(mnist) {
     forEachElementByClassName('mnist-digit', function(elem) {
       var index = elem.getAttribute('data-index')
       if(index) {
-        elem.src = extractImage(mnist.digits[index], width, height, colormap)
+        elem.src = extractImage(mnist.digits[index], width, height, digitColormap)
       }
     })
 
-    var currentDigit = document.getElementById('current-digit')
     document.getElementById('digit-grid').addEventListener('click', function(event) {
       var index = event.target.getAttribute('data-index')
       if(index) {
-        currentDigit.src = event.target.src
         var chooseEvent = new CustomEvent('choose-input', {detail: {input: mnist.digits[index]}});
         event.currentTarget.dispatchEvent(chooseEvent)
       }
@@ -235,11 +302,7 @@ function showErrorInfo() {
   document.querySelector('section.title').insertAdjacentHTML('afterend', html)
 }
 
-function extractImage(v, width, height, colormap) {
-  var canvas = document.createElement('canvas')
-  canvas.width = width
-  canvas.height = height
-  var context = canvas.getContext('2d')
+function vectorToImageData(context, v, width, height, colormap) {
   var px = context.createImageData(width, height)
 
   var i, j;
@@ -256,7 +319,16 @@ function extractImage(v, width, height, colormap) {
     }
   }
 
-  context.putImageData(px, 0, 0)
+  return px
+}
+
+function extractImage(v, width, height, colormap) {
+  var canvas = document.createElement('canvas')
+  canvas.width = width
+  canvas.height = height
+  var context = canvas.getContext('2d')
+  var imageData = vectorToImageData(context, v, width, height, colormap)
+  context.putImageData(imageData, 0, 0)
   return canvas.toDataURL('image/png')
 }
 

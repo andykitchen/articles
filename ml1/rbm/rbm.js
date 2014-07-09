@@ -39,7 +39,7 @@ function binomial(input) {
 function sample(input, W, bias) {
   var output = numeric.add(numeric.dot(W, input), bias)
   sigmoid(output)
-  binomial(output)
+  // binomial(output)
 
   return output
 }

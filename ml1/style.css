@@ -56,6 +56,10 @@ img, canvas {
   margin: 2em auto;
 }
 
+canvas {
+  border: 1px solid black;
+}
+
 table {
   margin: 2em auto;
 }

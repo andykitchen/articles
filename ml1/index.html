@@ -23,6 +23,12 @@
    <section itemprop="articleBody" class="light">
     <img src="images/mnist-example.png" width="367" height="196" alt="examples of handwritten digits from the MNIST dataset">
 
+    <script type="text/javascript" src="util/polyfill.js"></script>
+    <script type="text/javascript" src="util/gradient.js"></script>
+    <script type="text/javascript" src="lib/numeric-1.2.6.js"></script>
+    <script type="text/javascript" src="rbm/rbm.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+
     <p>
      At the heart of machine learning is pattern recognition. We want computers to find
      patterns in time, patterns in space, patterns within patterns.
@@ -62,20 +68,19 @@
 
     <p> <!-- FIXME -->
      Below is a live simulation of the 500 neurons in our learning program.
-     With each is neuron a visualisation of the pattern that activates it.
+     With each neuron is a visualisation of the pattern that activates it.
      Click on a digit or draw a new one to see which patterns are activated.
     </p>
 
     <div class="digit-grid" id="digit-grid"></div>
-
-    <img id="current-digit" width="84px" height="84px">
+    <canvas id="current-digit-canvas" width="280" height="280"></canvas>
+    <a id="clear-current-digit">Clear</a>
     <div class="feature-grid" id="feature-grid"></div>
-
 
     <p>
      Input digits are reflected by simulated neural activity.
      Each neuron is sensitive to a specific pattern — if that
-     pattern is present on the retina the related neuron
+     pattern is present on the simulated retina the related neuron
      will become active.
     </p>
 
@@ -91,15 +96,38 @@
    </section>
 
    <section>
-    <h2>Anomalies</h2> 
+    <h2>Anomalies</h2>
    </section>
 
-   <section>
-    <h2>Signal &amp; Noise</h2> 
-   </section>
+   <p> <!-- FIXME -->
+    Finding something out–of–the–ordinary, that grabs us and surprises us
+    is something that humans take great pride and pleasure in.
+    When something is out–of-pattern, it isn't described neatly in terms
+    of the patters that we are familiar with. You know exactly what's
+    going to happen next in many movies.
+   </p>
+
+   <p> <!-- FIXME -->
+    How do we know what's surprising to our mini–brain?
+    We run the patterns in the other direction. We use
+    the active neurons to ‘paint’ a picture of what it is thinking.
+    If the projection matches the input well, we know that it
+    fits known patterns well. If the projection poorly matches
+    the input, we know that the this not like the other things
+    we have seen.
+   </p>
 
    <section>
     <h2>Inference</h2>
+
+    <p>
+
+    </p>
+   </section>
+
+
+   <section>
+    <h2>Signal &amp; Noise</h2>
    </section>
 
    <section>
@@ -160,7 +188,7 @@
 
      is a good non-technical exposition of many of the ideas in this article. If you would like an approachable explination
      of the current work in neuroscience there is the excellent book
-     
+
      <span itemscope itemtype="http://schema.org/Book">
       <a href="http://connectomethebook.com/" itemprop="url">
        <span itemprop="name">Connectome</span>
@@ -171,12 +199,6 @@
        <span itemprop="name">Sebastian Seung</span></a></span></span>.
 
    </section>
-
-   <script type="text/javascript" src="util/polyfill.js"></script>
-   <script type="text/javascript" src="util/gradient.js"></script>
-   <script type="text/javascript" src="lib/numeric-1.2.6.js"></script>
-   <script type="text/javascript" src="rbm/rbm.js"></script>
-   <script type="text/javascript" src="main.js"></script>
   </article>
  </body>
 </html>
