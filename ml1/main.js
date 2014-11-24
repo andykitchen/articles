@@ -133,8 +133,8 @@ function buildGrid(rows, columns, fn) {
 }
 
 function drawVectorCanvas(canvas, rows, columns) {
-  var context = canvas.getContext('2d')
   var vector = newZeroArray(rows * columns)
+  var context = canvas.getContext('2d')
 
   context.webkitImageSmoothingEnabled && (context.webkitImageSmoothingEnabled = false)
 
@@ -151,7 +151,7 @@ function drawVectorCanvas(canvas, rows, columns) {
   backingCanvas.height = rows
   var backingContext = backingCanvas.getContext('2d')
 
-  function redraw() {
+  function redrawCanvas() {
     var imageData = vectorToImageData(backingContext, vector, columns, rows, digitColormap)
     backingContext.putImageData(imageData, 0, 0)
     context.drawImage(backingCanvas, 0, 0, canvas.width, canvas.height)
@@ -162,7 +162,17 @@ function drawVectorCanvas(canvas, rows, columns) {
     canvas.dispatchEvent(drawEvent)
   }
 
-  redraw()
+  function redraw() {
+    redrawCanvas()
+    fireDrawEvent()
+  }
+
+  canvas.addEventListener('clear', function() {
+    vector = newZeroArray(rows * columns)
+    redraw()
+  })
+
+  redrawCanvas()
 
   function draw(event) {
     var xscale = columns / canvas.width
@@ -179,7 +189,6 @@ function drawVectorCanvas(canvas, rows, columns) {
     vector[j2 * columns + i1] = 1
     vector[j2 * columns + i2] = 1
 
-    fireDrawEvent()
     redraw()
   }
 
@@ -197,8 +206,8 @@ function drawVectorCanvas(canvas, rows, columns) {
     redraw: redraw,
     setVector: function(newVector) {
       vector = newVector
-      fireDrawEvent()
       redraw()
+      fireDrawEvent()
     }
   }
 }
@@ -212,10 +221,10 @@ var featureGrid = buildGrid(20, 25, function(index, td) {
 onload(function() {
   document.getElementById('feature-grid').appendChild(featureGrid.root)
 
-  var canvas = document.getElementById('current-digit-canvas')
+  var canvas = document.getElementById('current-digit')
   var vectorCanvas = drawVectorCanvas(canvas, 28, 28)
 
-  document.getElementById('digit-grid').addEventListener('choose-input', function(event) {
+  document.getElementById('digit-grid').addEventListener('choose-digit', function(event) {
     vectorCanvas.setVector(event.detail.input)
   })
 })
@@ -239,18 +248,11 @@ function rbmParamsLoaded(json) {
       elem.src = featureImages[index]
     })
 
-    var gridColumns = 25
-    var gridRows = 20
-    document.getElementById('current-digit-canvas').addEventListener('draw', function(event) {
+    document.getElementById('current-digit').addEventListener('draw', function(event) {
       rbm.visible = event.detail.vector
       rbm.sample_h_given_v()
 
       featureGrid.elems.forEach(function(elem, index) {
-        // if(rbm.hidden[index] > 0.5) {
-        //   elem.classList.add('active')
-        // } else {
-        //   elem.classList.remove('active')
-        // }
         elem.style.opacity = rbm.hidden[index]
       })
     })
@@ -285,7 +287,7 @@ function mnistLoaded(mnist) {
     document.getElementById('digit-grid').addEventListener('click', function(event) {
       var index = event.target.getAttribute('data-index')
       if(index) {
-        var chooseEvent = new CustomEvent('choose-input', {detail: {input: mnist.digits[index]}});
+        var chooseEvent = new CustomEvent('choose-digit', {detail: {input: mnist.digits[index]}});
         event.currentTarget.dispatchEvent(chooseEvent)
       }
     })
@@ -295,7 +297,7 @@ function mnistLoaded(mnist) {
 function showErrorInfo() {
   var html = 
     '<section class="error">' +
-      '<h2>Could not load supporting data for this page properly!</h2>' +
+      '<h2>Couldn&rsquo;t load supporting data for this page properly!</h2>' +
       '<p>Try <a href="javascript:location.reload()">refreshing</a> the page.</p>' +
     '</section>'
 
@@ -333,3 +335,9 @@ function extractImage(v, width, height, colormap) {
 }
 
 })();
+
+function clear(id) {
+  var elem = document.getElementById(id)
+  var event = new CustomEvent('clear')
+  elem.dispatchEvent(event)
+}

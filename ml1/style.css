@@ -108,3 +108,13 @@ td, tr {
  vertical-align: sub;
  font-weight: 300;
 }
+
+.current-digit-area {
+  max-width: 30em;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.current-digit-area a {
+  vertical-align: top;
+}
