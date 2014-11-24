@@ -73,9 +73,16 @@
     </p>
 
     <div class="digit-grid" id="digit-grid"></div>
-    <canvas id="current-digit" width="280" height="280"></canvas>
-    <p style="text-align: center;"><a href="javascript:clear(’current-digit’)">Clear</a></p>
-    <div class="feature-grid" id="feature-grid"></div>
+    
+    <div id="flexbox">
+      <canvas id="current-digit" width="280" height="280"></canvas>
+      
+      <div class="feature-grid" id="feature-grid"></div>
+
+    </div>
+
+    <p align="center"><a id="clear-btn" href="javascript:clear('current-digit')">Clear</a></p>
+   
 
     <p>
      Input digits are reflected by simulated neural activity.
@@ -91,7 +98,7 @@
 
     <p>
      “Fire together, wire together”
-     http://en.wikipedia.org/wiki/Hebbian_theory
+     <a href="http://en.wikipedia.org/wiki/Hebbian_theory" itemprop="url" target="_blank">en.wikipedia.org/wiki/Hebbian_theory</a>
     </p>
    </section>
 
@@ -156,31 +163,31 @@
    <section>
     <h2>Further Reading</h2>
     <p>
-     The machine learning algorithm used in this article is the <a href="http://en.wikipedia.org/wiki/Restricted_Boltzmann_machine">Restricted Boltzmann machine</a>. If you are interested in contemporary AI and its relationship to the brain check out
+     The machine learning algorithm used in this article is the <a href="http://en.wikipedia.org/wiki/Restricted_Boltzmann_machine" target="_blank">Restricted Boltzmann machine</a>. If you are interested in contemporary AI and its relationship to the brain check out
      the work of
 
      <span itemscope itemtype="http://schema.org/Person">
-      <a href="http://www.cs.toronto.edu/~hinton/" itemprop="url">
+      <a href="http://www.cs.toronto.edu/~hinton/" itemprop="url" target="_blank">
        <span itemprop="name">Geoffrey Hinton</span></a></span>,
 
      <span itemscope itemtype="http://schema.org/Person">
-      <a href="http://cs.stanford.edu/people/ang/" itemprop="url">
+      <a href="http://cs.stanford.edu/people/ang/" itemprop="url" target="_blank">
        <span itemprop="name">Andrew Ng</span></a></span> and
 
      <span itemscope itemtype="http://schema.org/Person">
-      <a href="http://yann.lecun.com/" itemprop="url">
+      <a href="http://yann.lecun.com/" itemprop="url" target="_blank">
        <span itemprop="name">Yann Lecunn</span></a></span>.
 
      If you are a programmer the <a href="https://www.coursera.org/course/ml">coursera course on machine learning</a> covers
      implementing neural networks in detail. The book
 
      <span itemscope itemtype="http://schema.org/Book">
-      <a href="http://www.onintelligence.org/" itemprop="url">
+      <a href="http://www.onintelligence.org/" itemprop="url" target="_blank">
        <span itemprop="name">On Intelligence</span>
       </a>
       by
       <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-       <a href="http://en.wikipedia.org/wiki/Jeff_Hawkins" itemprop="url">
+       <a href="http://en.wikipedia.org/wiki/Jeff_Hawkins" itemprop="url" target="_blank">
         <span itemprop="name">Jeff Hawkins</span>
        </a>
       </span>
@@ -190,12 +197,12 @@
      of the current work in neuroscience there is the excellent book
 
      <span itemscope itemtype="http://schema.org/Book">
-      <a href="http://connectomethebook.com/" itemprop="url">
+      <a href="http://connectomethebook.com/" itemprop="url" target="_blank">
        <span itemprop="name">Connectome</span>
       </a>
       by
       <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-       <a href="http://hebb.mit.edu/people/seung/" itemprop="url">
+       <a href="http://hebb.mit.edu/people/seung/" itemprop="url" target="_blank">
        <span itemprop="name">Sebastian Seung</span></a></span></span>.
 
    </section>

@@ -11,6 +11,11 @@ a {
  border-bottom: 1px solid rgba(0,0,0,0.2);
 }
 
+a:hover, a:focus, a:active{
+  border-color: #0000ee;
+}
+
+
 section { padding: 2em 1em; }
 section.title { background-color: #363540; color: #f5f5f5; padding: 5em 1em;}
 section.light { background-color: white }
@@ -47,8 +52,7 @@ header p {
 
 p {
  max-width: 30em;
- margin: 1em auto;
- line-height: 1;
+ margin: 1.5em auto;
 }
 
 img, canvas {
@@ -73,6 +77,10 @@ img.mnist-digit {
   width: 28px;
   height: 28px;
   border: 1px solid #ddd;
+}
+
+img.mnist-digit:hover {
+  border-color: #0000ee;
 }
 
 img.feature {
@@ -118,3 +126,26 @@ td, tr {
 .current-digit-area a {
   vertical-align: top;
 }
+
+#flexbox{
+  display: flex; 
+  flex-direction: row;
+  height: 280px;
+  justify-content: center;
+}
+
+  #current-digit{
+    order: 1;
+    margin: 0;
+  }
+
+  #feature-grid{
+    order: 2;
+    
+  }
+
+  #flexbox table{
+    margin: 0;
+  }
+
+
